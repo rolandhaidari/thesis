@@ -63,8 +63,9 @@ while True:
     max_key_count = {'data/urls': 6300000, 'data/urls-short': 6300000, 'data/wiki': 15000000, 'int': 4e9, 'rng4': 1e9}[
         data]
     lower = 8 if data == 'int' else 10
-    psl_exp = 12  # randrange(lower, 16)
+    psl_exp = randrange(11,14)  # randrange(lower, 16)
     psl = 2 ** psl_exp
+    psi=psl
     payload_size = 8 #randrange(0, 16) if random() < 0.75 else randrange(0, 256)
     target_total_size = 10 ** (random() * 0.5 + 8.25)
     density = 1 / 2 ** random()
@@ -81,7 +82,7 @@ while True:
     if ycsb == 5 and config == 'hot':
         print("ycsb 5 with hot")
         continue
-    path = f'btree-binaries/-DPS_I=4096 -DPS_L={psl}/{config}-n3-ycsb'
+    path = f'btree-binaries/-DPS_I={psi} -DPS_L={psl}/{config}-n3-ycsb'
     env = {
         '_path': path,
         'RUN_ID': uuid4(),
