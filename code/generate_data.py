@@ -58,7 +58,6 @@ while True:
         break
     # zipf random value between 0 and 1.5
     zipf= random()*1.5
-    print("zipf: ", zipf)
     ycsb = choices(population=[3, 5], weights=[2, 1])[0]
     #data = choices(population=['rng4', 'int', 'data/urls-short', 'data/wiki'], weights=[1, 1, 1, 1])[0]
     data = 'data/urls'
