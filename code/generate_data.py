@@ -12,6 +12,7 @@ from datetime import datetime
 STDOUT = 'output.csv'
 STDERR = f'errlog-output.csv'
 
+# usage: nohup poetry run python code/generate_data.py > output.log &
 
 # parallel -j16 -- ./page-size-run.py {1} ::: $(seq 1 16)
 
@@ -45,7 +46,7 @@ def archive():
     shutil.move(STDERR, os.path.join(new_dir, STDERR))
 
 starttime = datetime.now()
-time_limit=60 # hours * minutes * seconds
+time_limit= 7*60*60 # hours * minutes * seconds
 i=0
 while True:
     i+=1
@@ -55,7 +56,9 @@ while True:
     if (datetime.now() - starttime).total_seconds() > time_limit:
         print("time limit reached")
         break
-
+    # zipf random value between 0 and 1.5
+    zipf= random()*1.5
+    print("zipf: ", zipf)
     ycsb = choices(population=[3, 5], weights=[2, 1])[0]
     #data = choices(population=['rng4', 'int', 'data/urls-short', 'data/wiki'], weights=[1, 1, 1, 1])[0]
     data = 'data/urls'
@@ -65,7 +68,8 @@ while True:
     lower = 8 if data == 'int' else 10
     psl_exp = randrange(11,14)  # randrange(lower, 16)
     psl = 2 ** psl_exp
-    psi=psl
+    psi_exp = randrange(11,14) 
+    psi = 2 ** psi_exp
     payload_size = 8 #randrange(0, 16) if random() < 0.75 else randrange(0, 256)
     target_total_size = 10 ** (random() * 0.5 + 8.25)
     density = 1 / 2 ** random()
@@ -92,7 +96,7 @@ while True:
         'DATA': data,
         'KEY_COUNT': key_count,
         'PAYLOAD_SIZE': payload_size,
-        'ZIPF': -1,
+        'ZIPF': zipf,
         'DENSITY': density,
     }
     env = {k: str(env[k]) for k in env}
