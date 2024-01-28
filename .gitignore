@@ -178,3 +178,4 @@ pyrightconfig.json
 output/
 btree-binaries/
 data/
+*.csv
