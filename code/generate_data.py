@@ -46,7 +46,7 @@ def archive():
     shutil.move(STDERR, os.path.join(new_dir, STDERR))
 
 starttime = datetime.now()
-time_limit= 7*60*60 # hours * minutes * seconds
+time_limit= 20 # hours * minutes * seconds
 i=0
 while True:
     i+=1
@@ -85,7 +85,7 @@ while True:
     if ycsb == 5 and config == 'hot':
         print("ycsb 5 with hot")
         continue
-    path = f'btree-binaries/-DPS_I={psi} -DPS_L={psl}/{config}-n3-ycsb'
+    path = f'btree-binaries/_DPS_I_{psi}__DPS_L_{psl}/{config}-n3-ycsb'
     env = {
         '_path': path,
         'RUN_ID': uuid4(),
@@ -97,6 +97,7 @@ while True:
         'PAYLOAD_SIZE': payload_size,
         'ZIPF': zipf,
         'DENSITY': density,
+        'LD_LIBRARY_PATH': '/home/roland-haidari/libwh'
     }
     env = {k: str(env[k]) for k in env}
     try:
@@ -109,7 +110,7 @@ while True:
         process.kill()
         stdout = ''
         stderr = f'exception: {e}\n'
-        print("exception")
+        print(stderr)
     append(STDOUT, stdout)
     append(STDERR, f'{env}\n{stderr}')
 
