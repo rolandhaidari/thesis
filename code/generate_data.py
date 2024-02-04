@@ -9,7 +9,7 @@ import os
 import shutil
 from datetime import datetime
 
-STDOUT = 'output.csv'
+STDOUT = 'output_new.csv'
 STDERR = f'errlog-output.csv'
 
 # usage: nohup poetry run python code/generate_data.py > output.log &
@@ -34,7 +34,7 @@ def archive():
     now = datetime.now()
 
     # Format the date and time
-    date_time = now.strftime("%Y%m%d_%H:%M:%S")
+    date_time = now.strftime("%Y%m%d_%H:%M:%S_new")
 
     # Create the new directory
     new_dir = os.path.join("output", date_time)
@@ -46,7 +46,7 @@ def archive():
     shutil.move(STDERR, os.path.join(new_dir, STDERR))
 
 starttime = datetime.now()
-time_limit= 20 # hours * minutes * seconds
+time_limit= 13*60*60 # hours * minutes * seconds
 i=0
 while True:
     i+=1
@@ -101,11 +101,22 @@ while True:
     }
     env = {k: str(env[k]) for k in env}
     try:
-        process = subprocess.Popen(path, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env, text=True)
-        stdout, stderr = process.communicate()
-        print("-----------------")
+        try:
+            process = subprocess.Popen(path, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env, text=True)
+            stdout, stderr = process.communicate(timeout=30)  # timeout after 10 seconds
+        except subprocess.TimeoutExpired:
+            print("timeout")
+            process.kill()
+            stdout, stderr = process.communicate()
+       
         if process.returncode != 0:
-            raise RuntimeError(f'nonzero return code: {process.returncode}, stderr: {stderr}')
+            print("non-0 return code")
+            stderr=f'nonzero return code: {process.returncode}, stderr: {stderr}'
+            print(stderr)
+            #raise RuntimeError(f'nonzero return code: {process.returncode}, stderr: {stderr}')
+
+        print("-----------------")
+            
     except Exception as e:
         process.kill()
         stdout = ''
@@ -114,6 +125,8 @@ while True:
     append(STDOUT, stdout)
     append(STDERR, f'{env}\n{stderr}')
 
+date_time = datetime.now().strftime("%Y%m%d_%H:%M:%S")
+print(date_time)
 archive()
 
 
