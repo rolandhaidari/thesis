@@ -16,6 +16,8 @@ shap = "^0.44.0"
 interpret = "^0.5.0"
 lime = "^0.2.0.1"
 statsmodels = "^0.14.1"
+skope-rules = "^1.0.1"
+mlxtend = "^0.23.1"
 
 
 [tool.poetry.group.dev.dependencies]
