@@ -9,7 +9,7 @@ import os
 import shutil
 from datetime import datetime
 
-STDOUT = 'output_just_ps.csv'
+STDOUT = 'output_int_ps.csv'
 STDERR = f'errlog-output.csv'
 
 # usage: nohup poetry run python code/generate_data.py > output.log &
@@ -34,7 +34,7 @@ def archive():
     now = datetime.now()
 
     # Format the date and time
-    date_time = now.strftime("%Y%m%d_%H:%M:%S_just_ps")
+    date_time = now.strftime("%Y%m%d_%H:%M:%S_int_ps")
 
     # Create the new directory
     new_dir = os.path.join("output", date_time)
@@ -46,7 +46,7 @@ def archive():
     shutil.move(STDERR, os.path.join(new_dir, STDERR))
 
 starttime = datetime.now()
-time_limit= 10*60*60 # hours * minutes * seconds
+time_limit= 13*60*60 # hours * minutes * seconds
 i=0
 while True:
     i+=1
@@ -60,7 +60,7 @@ while True:
     zipf= 1
     ycsb = choices(population=[3, 5], weights=[2, 1])[0]
     #data = choices(population=['rng4', 'int', 'data/urls-short', 'data/wiki'], weights=[1, 1, 1, 1])[0]
-    data = 'data/urls'
+    data = 'int'
     avg_key_size = {'data/urls': 62.280, 'rng4': 4, 'data/urls-short': 62.204, 'data/wiki': 22.555, 'int': 4}[data]
     max_key_count = {'data/urls': 6300000, 'data/urls-short': 6300000, 'data/wiki': 15000000, 'int': 4e9, 'rng4': 1e9}[
         data]
@@ -69,17 +69,17 @@ while True:
     psl = 2 ** psl_exp
     psi_exp = randrange(11,14) 
     psi = 2 ** psi_exp
-    payload_size = 8 #randrange(0, 16) if random() < 0.75 else randrange(0, 256)
+    payload_size = (choices(population=[4,8,16,32,64,128,256])[0]) #randrange(0, 16) if random() < 0.75 else randrange(0, 256)
     #target_total_size = 10 ** ((choices(population=[0,0.25,0.5,0.75,1], weights=[1,1,1,1])[0]) *0.5 + 8.25)
     #target_total_size = 10 ** (random() * 0.5 + 8.25)
-    density = 1 / 2 ** (choices(population=[0,0.25,0.5,0.75,1], weights=[1,1,1,1,1])[0])
-    #key_count = (choices(population=[1000000,2000000,3000000,4000000,5000000,6000000], weights=[1,1,1,1,1,1])[0])#floor(target_total_size / (payload_size + avg_key_size))
-    key_count=5000000
+    density = 1
+    key_count = (choices(population=[1e6,1e7,1e8,1e9])[0])#floor(target_total_size / (payload_size + avg_key_size))
+    #key_count=6000000
     if key_count > max_key_count:
         print("key count too high")
         continue
     #config = choices(population='dense1 hash hints dense2 baseline prefix hot art adapt'.split())[0]
-    config = choices(population='dense3 hints hash'.split())[0]
+    config = 'hints'
 
     if (config == 'dense1' or config == 'dense2') and data != 'int' and data != 'rng4':
         print("dense1 or dense2 with non-int data")
@@ -105,7 +105,7 @@ while True:
     try:
         try:
             process = subprocess.Popen(path, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env, text=True)
-            stdout, stderr = process.communicate(timeout=30)  # timeout after 10 seconds
+            stdout, stderr = process.communicate(timeout=90)  # timeout after 10 seconds
         except subprocess.TimeoutExpired:
             print("timeout")
             process.kill()
