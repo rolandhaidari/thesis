@@ -1,0 +1,13 @@
+\chapter{Introduction}\label{chapter:introduction}
+
+In computer systems, good responsiveness of systems is desired to achieve fast retrieval of information. Where and how data is stored, can greatly impact the latency of data storage systems. Traditionally, systems would offload data to disk, which would lead to slower performance. More modern hardware technologies allow storing bigger amounts of data in-memory, which brings lower latency. To optimize storage, there exist numerous data structures and ways to store the data. One important factor, however, is the need to be able to efficiently offload data to secondary storage, once the memory limits are reached. 
+\\\\
+The B+ tree structure enabled managing data in-memory and supports disk storage as well. In their paper, Müller et al. \parencite{mueller2024} aim to optimize the performance of B+ trees by exploring various possible configurations and optimizations on different datasets and statistically analyzing the performance impacts of the configurations. 
+\\\\
+Nowadays, according to Davenport \parencite{FiveKeyT68:online}, \ac{ML} and Artificial Intelligence has taken more relevance in the data science world. The idea of gaining insights with smart algorithms and large amounts of data is naturally intriguing. This thesis attempts to utilize machine learning to find potential optimization techniques of B+ trees. To do so, multiple steps need to be taken. These steps, as explained by Stodden in \parencite{datasciencelifecycle}, include data collection, data exploration, data preprocessing, model training and model evaluation. Together these steps form the data science life cycle.
+\\\\
+Once a well-performing model is trained, it can be attempted to analyze and explain the insights that the \ac{ML} model has learned. \ac{XAI} is a field in the data science that focuses on this idea. This thesis, tries to apply common \ac{XAI} techniques to the trained models to verify existing insights or gain new - possibly unseen - information that could help optimize B+ tree performance.
+\\\\
+In addition to the classical model training and \ac{XAI}, a data-mining pattern recognition approach is taken, where two algorithms are used to gain insights by computing frequent itemsets and association rules.
+\\\\
+The code base, excluding the datasets, is published in the GitHub repository at \url{https://github.com/rolandhaidari/thesis}.

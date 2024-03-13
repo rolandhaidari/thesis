@@ -1,0 +1,18 @@
+\chapter{Conclusion and Future Work }\label{chapter:summary}
+This thesis explored the use of \ac{ML} models to analyze behavior of B+ trees with different optimizations and configurations. The aim of this thesis was to find insights into how one can improve the performance of B+ trees.
+\\\\
+The methodology used in this thesis explored multiple ways of getting the desired insights. Firstly, two datasets were created, by running a benchmarking program many times with a varying B+ tree configurations, and measuring the performance of each run. These datasets were then preprocessed to fit the desired structures of the used algorithms.
+\\\\
+The initial, statistical analysis brought meaningful insights into which features can and can not be used for trying to identify patterns between inputs and outputs.
+\\\\
+The main approach of this thesis was to train classification models on the dataset and identify, using \ac{XAI} on the best performing model, which inputs, impact the performance and how. The best performing model for the dataset was a neural network classifier, which by using on SHAP summary plots indicated the most influential parameters for performance. The skewness of the data together with the size of the data seem to impact the performance the most. For inserting and scan operations, the page size of leaf nodes can impact the performance as well. This indicates that an implementation of adaptive B+ trees, could potentially further improve performance of the data structure.
+\\\\
+The second approach was to use regression models, which managed to get good results in terms of their $R^2$ metrics. However, using \ac{XAI} algorithms on the models and getting insights from those proved to be mode difficult due to the scale of the feature \textit{time}. Nevertheless, some insights gained from the first approach, were further supported.
+\\\\
+Another approach was to use data mining pattern recognition techniques, to find patterns in the data. The association rule mining algorithm was used on a dataset, which has more discrete feature values, with fewer variations. This approach ultimately confirmed the claim that a bigger size of payload or data, impacts the performance negatively. Retrospectively, one could generate the dataset by not varying these parameters, and instead focus more on varying the page size of the leaf node and other optimizations. This way, one could identify more relevant patterns for an adaptive B+ tree. 
+\\\\
+Lastly, it was attempted to take train regression models on the dataset for pattern recognition techniques and generate heatmaps to create an overview of which payload and data size combination benefit from which page size of leaf nodes the most. This approach, however, failed due to the models not assigning enough importance to the page size. Nevertheless, a heatmap based on the empirical means and not the regression models was generated and discussed.
+\\\\
+One key observation, outside the scope of B+ trees, is that using \ac{XAI} on \ac{ML} models is a viable way to gain valuable insights into a dataset.
+\\\\
+In future works, this thesis could be expanded to use other types of data, instead of restricting itself to urls. Additionally, more parameters could be varied, and a bigger dataset created, to yield more confident results. Using the approaches demonstrated in this thesis, one could potentially identify more helpful patterns.
